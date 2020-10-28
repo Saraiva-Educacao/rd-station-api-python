@@ -19,3 +19,14 @@ conda create -n ENVIRONMENT_NAME python=3.7
 conda activate ENVIRONMENT_NAME
 pip install -r requirements.txt
 ``` 
+
+# Usage
+
+Create file auth rdstation_client.json
+
+Vide: https://developers.rdstation.com/en/overview
+Python code example:
+
+```
+
+```
