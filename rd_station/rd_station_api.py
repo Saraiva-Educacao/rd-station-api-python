@@ -126,3 +126,34 @@ class RdApi:
         response = requests.put(url, headers=self.headers, data=json.dumps(req_data))
 
         return response
+
+    def get_contact_fields(self):
+        print('Getting contact fields...')
+        url = f'{self.base_url}/platform/contacts/fields'
+        response = requests.get(url, headers=self.headers)
+
+        return response
+
+    def get_contact_by_uuid(self, lead_uuid):
+        url = f'{self.base_url}/platform/contacts/{lead_uuid}'
+        response = requests.get(url, headers=self.headers)
+
+        return response
+
+    def get_contact_by_email(self, email):
+        url = f'{self.base_url}/platform/contacts/email:{email}'
+        response = requests.get(url, headers=self.headers)
+
+        return response
+
+    def get_contact_events(self, lead_uuid, event_type='CONVERSION'):
+        url = f'{self.base_url}/platform/contacts/{lead_uuid}/events?event_type={event_type}&order=created_at:desc'
+        response = requests.get(url, headers=self.headers)
+
+        return response
+
+    def get_contact_funnels(self, lead_uuid, funnel_name='default'):
+        url = f'{self.base_url}/platform/contacts/{lead_uuid}/funnels/{funnel_name}'
+        response = requests.get(url, headers=self.headers)
+
+        return response
