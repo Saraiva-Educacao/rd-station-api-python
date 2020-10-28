@@ -1,3 +1,4 @@
+import json
 import requests
 from tools.exceptions import AuthorizationError
 
@@ -77,3 +78,51 @@ class RdApi:
             return json_token['access_token']
         elif status_code == 401:
             raise AuthorizationError('ACCESS_DENIED: Wrong credentials provided.')
+
+    def create_webhook(self, webhook_url, event_type='CONVERTED', include_relations=[]):
+        """ It creates a webhook subscription.
+        See: https://developers.rdstation.com/pt-BR/reference/webhooks#methodPostDetails
+
+        Args:
+            webhook_url (str): The webhook destination URL. The URL to RD Station send the data.
+            event_type (str): The valid options are: WEBHOOK.CONVERTED, WEBHOOK.MARKED_OPPORTUNITY.
+            include_relations (list): The relations you would like to include in webhook payload.
+            Only "COMPANY" and "CONTACT_FUNNEL" are supported.
+
+        Returns:
+            requests.models.Response
+        """
+
+        print('Creating webhook...')
+        api_url = f'{self.base_url}/integrations/webhooks'
+
+        req_data = {
+            "entity_type": "CONTACT",
+            "event_type": f"WEBHOOK.{event_type}",
+            "event_identifiers": [],
+            "url": webhook_url,
+            "http_method": "POST",
+            "include_relations": include_relations
+        }
+        response = requests.post(api_url, headers=self.headers, data=json.dumps(req_data))
+
+        return response
+
+    def list_webhooks(self):
+        url = f'{self.base_url}/integrations/webhooks'
+        response = requests.get(url, headers=self.headers)
+
+        return response
+
+    def delete_webhook(self, webhook_uuid):
+        print(f'Deleting webhook {webhook_uuid}...')
+        url = f'{self.base_url}/integrations/webhooks/{webhook_uuid}'
+        response = requests.delete(url, headers=self.headers)
+
+        return response
+
+    def updated_webhooks(self, webhook_uuid, req_data):
+        url = f'{self.base_url}/integrations/webhooks/{webhook_uuid}'
+        response = requests.put(url, headers=self.headers, data=json.dumps(req_data))
+
+        return response
