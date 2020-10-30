@@ -227,14 +227,14 @@ class TestRdApi(TestCase):
         mock_requests.assert_called_once()
 
     @mock.patch.object(requests, 'put', side_effect=mock_requests)
-    def test_updated_webhooks(self, mock_requests):
+    def test_update_webhooks(self, mock_requests):
         req_data = {
             "entity_type": "CONTACT",
             "event_type": "WEBHOOK.CONVERTED",
             "url": "http://my-url.com",
             "http_method": "POST",
         }
-        update_webhook_response = self.rd_api.updated_webhooks('webhook_uuid', req_data)
+        update_webhook_response = self.rd_api.update_webhooks('webhook_uuid', req_data)
         updated_webhook = update_webhook_response.json()
         self.assertEqual(update_webhook_response.status_code, 201)
         assert isinstance(updated_webhook, dict)

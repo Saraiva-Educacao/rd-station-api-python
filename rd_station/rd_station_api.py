@@ -134,7 +134,7 @@ class RdApi:
 
         return response
 
-    def updated_webhooks(self, webhook_uuid, req_data):
+    def update_webhooks(self, webhook_uuid, req_data):
         url = f'{self.base_url}/integrations/webhooks/{webhook_uuid}'
         response = requests.put(url, headers=self.headers, data=json.dumps(req_data))
 
