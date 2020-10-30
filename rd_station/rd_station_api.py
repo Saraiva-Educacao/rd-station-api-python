@@ -79,6 +79,19 @@ class RdApi:
         elif status_code == 401:
             raise AuthorizationError('ACCESS_DENIED: Wrong credentials provided.')
 
+    def get_contact_fields(self):
+        print('Getting contact fields...')
+        url = f'{self.base_url}/platform/contacts/fields'
+        response = requests.get(url, headers=self.headers)
+
+        return response
+
+    def get_contact_by_uuid(self, lead_uuid):
+        url = f'{self.base_url}/platform/contacts/{lead_uuid}'
+        response = requests.get(url, headers=self.headers)
+
+        return response
+
     def create_webhook(self, webhook_url, event_type='CONVERTED', include_relations=[]):
         """ It creates a webhook subscription.
         See: https://developers.rdstation.com/pt-BR/reference/webhooks#methodPostDetails
@@ -124,19 +137,6 @@ class RdApi:
     def updated_webhooks(self, webhook_uuid, req_data):
         url = f'{self.base_url}/integrations/webhooks/{webhook_uuid}'
         response = requests.put(url, headers=self.headers, data=json.dumps(req_data))
-
-        return response
-
-    def get_contact_fields(self):
-        print('Getting contact fields...')
-        url = f'{self.base_url}/platform/contacts/fields'
-        response = requests.get(url, headers=self.headers)
-
-        return response
-
-    def get_contact_by_uuid(self, lead_uuid):
-        url = f'{self.base_url}/platform/contacts/{lead_uuid}'
-        response = requests.get(url, headers=self.headers)
 
         return response
 
